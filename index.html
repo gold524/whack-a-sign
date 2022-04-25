@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style>
+		.hole{
+			width: 150px;
+			height: 100px;
+			background-image: url(hole.png);
+			background-size: 100% 100%;
+			margin-left: 100px;
+			position: relative;
+		}
+		.main{
+			display: flex;
+			width: 800px;
+			height: 500px;
+			flex-wrap: wrap;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 200px;
+		}
+		.mole{
+			width: 120px;
+			height: 120px;
+			position: absolute;
+			background-size: 100% 100%;
+			top: -45px;
+			left: 0px;
+			transition: 1s;
+			margin-left: 20px;
+		}
+	</style>
+</head>
+<body style="background-image: url(field.jpg); background-size: 100% 100%;">
+	<h1 style="color: red;">Score: <span class="score"></span></h1>
+	<h1 style="color: red;">Time: <span class="time"></span></h1>
+	<div class="main">
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+		<div class="hole"></div>
+	</div>
+	<script>
+	    let time = 60;
+	    let time_txt = document.querySelector(".time");
+	    time_txt.innerHTML = time;
+
+    	int1 = setInterval(countdown, 1000);
+
+	    function countdown(){
+	        time -= 1;
+	        time_txt.innerHTML = time;
+	        if (time == 0){
+	            clearInterval(int1)
+	            alert('Очки: ' + score)
+	        }
+	        return time;
+	    }
+
+		let hole = document.querySelectorAll(".hole");
+		let img = ["aim.png", "aim2.png", "aimno.png"];
+
+		let score = 0;
+		let scoretxt = document.querySelector(".score")
+		scoretxt.innerHTML = score;
+
+		function rand(arg){
+			let x = Math.random() * arg;
+			let y = Math.round(x);
+			return y;
+		}
+
+		function create(){
+			let mole = document.createElement("div");
+			hole[rand(8)].appendChild(mole);
+			let randimg = rand(2);
+			mole.style.backgroundImage = "url(" + img[randimg] + ")";
+			mole.classList.add("mole");
+			setTimeout(up, 500)
+			function up(){
+				mole.style.top = -85 + "px";
+			}
+			setTimeout(down, 1000)
+			function down(){
+				mole.style.top = -45 + "px";
+			}
+			setTimeout(disappear, 1500)
+			function disappear(){
+				mole.style.display = "none";
+			}
+
+			if (randimg == 0){
+				mole.type = "norm";
+			}else if (randimg == 1){
+				mole.type = "good";
+			}else if (randimg == 2){
+				mole.type = "bad";
+			}
+			mole.onclick = function(){
+				mole.style.display = "none";
+				if (mole.type == "norm") {
+					score += 10;
+					scoretxt.innerHTML = score;
+				}
+				if (mole.type == "good") {
+					score += 20;
+					scoretxt.innerHTML = score;
+				}
+				if (mole.type == "bad") {
+					score -= 10;
+					scoretxt.innerHTML = score;
+				}
+			}
+		}
+		setInterval(create, 1000);
+	</script>
+</body>
+</html>
